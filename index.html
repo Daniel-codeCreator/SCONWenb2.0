@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCON Web - Servicio Técnico</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- Leaflet CSS & JS para mapa interactivo -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar / Menú Admin -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <!-- Brand / Logo Integrado Moderno -->
+        <div class="brand-logo-container">
+          <div class="brand-icon-wrapper">
+            <i data-feather="cpu"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Servicio<strong class="brand-tech">Técnico</strong></span>
+            <span class="brand-sub">by CANELLA</span>
+          </div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item" id="nav-pendientes">
+          <i data-feather="bell"></i> Pendientes 
+          <span class="badge-count" id="badge-pendientes">2</span>
+        </a>
+        <a href="#" class="nav-item active" id="nav-equipos"><i data-feather="printer"></i> Equipos</a>
+        <a href="#" class="nav-item" id="nav-lecturas-page"><i data-feather="hash"></i> Lecturas</a>
+        <a href="#" class="nav-item" id="nav-repuestos-page"><i data-feather="tool"></i> Repuestos</a>
+        <a href="#" class="nav-item" id="nav-contratos-page"><i data-feather="file-text"></i> Contratos</a>
+        <a href="#" class="nav-item"><i data-feather="message-square"></i> Encuestas</a>
+        <a href="#" class="nav-item"><i data-feather="trending-up"></i> Indicadores</a>
+        <a href="#" class="nav-item"><i data-feather="edit-3"></i> Consultas</a>
+        <a href="#" class="nav-item"><i data-feather="book-open"></i> Manuales</a>
+        <a href="#" class="nav-item"><i data-feather="settings"></i> Configuración</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item"><i data-feather="log-out"></i> Salir</a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-header">
+        <div class="breadcrumb" id="top-breadcrumb">
+          <span>Menú Principal</span> / <span>Gestión de Equipos</span> / <strong>4GN13899</strong>
+        </div>
+        
+        <!-- Header Profile con el distintivo del logo -->
+        <div class="header-right-container">
+          <div class="brand-header-mini">
+            <span class="mini-tag">SCON Web</span>
+          </div>
+          <div class="user-profile">
+            <i data-feather="user"></i>
+            <span>Servicio Técnico</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VISTA 1: GESTIÓN DE EQUIPOS (PÁGINA PRINCIPAL) -->
+      <section class="dashboard-grid view-section" id="view-equipos">
+        
+        <!-- Header del Equipo -->
+        <div class="card equipment-header-card span-full">
+          <div class="equipment-info-bar">
+            <div class="input-group">
+              <label>Serie</label>
+              <input type="text" value="4GN13899" readonly>
+            </div>
+            <div class="input-group">
+              <label>Modelo</label>
+              <input type="text" value="5848C002AA" readonly>
+            </div>
+            <div class="input-group grow">
+              <label>Descripción</label>
+              <input type="text" value="IR-ADV 529IF 120V JPN" readonly>
+            </div>
+            <div class="action-toolbar">
+              <button title="Info"><i data-feather="info"></i></button>
+              <button title="Usuarios"><i data-feather="users"></i></button>
+              <button id="btn-show-map" title="Ver Ubicación en Mapa"><i data-feather="map-pin"></i></button>
+              <button title="Reportes"><i data-feather="file-text"></i></button>
+              <button title="Mantenimiento"><i data-feather="check-square"></i></button>
+              <button class="btn-close"><i data-feather="x"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner de Pendientes -->
+        <div class="card span-full alert-card" id="card-pendientes">
+          <div class="card-header">
+            <h3><i data-feather="alert-circle"></i> Tareas Pendientes del Equipo</h3>
+            <button class="btn-icon" id="btn-close-pendientes" title="Cerrar banner"><i data-feather="x"></i></button>
+          </div>
+          <div class="card-body">
+            <ul class="pending-list" id="list-pendientes"></ul>
+          </div>
+        </div>
+
+        <!-- Card: Cliente -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="user"></i> Cliente</h3>
+            <button class="btn-icon" title="Editar Cliente"><i data-feather="edit-2"></i></button>
+          </div>
+          <div class="card-body">
+            <h4>BANCO INDUSTRIAL, S.A.</h4>
+            <p><strong>NIT:</strong> 69765-6</p>
+            <p><strong>Contrato:</strong> 5332</p>
+            <p><strong>Tipo:</strong> RENTA</p>
+            <p><strong>Vence:</strong> 30/03/2028</p>
+            <p><strong>Estado:</strong> <span class="status-badge active">CONTRATO VIGENTE</span></p>
+            <p class="text-muted"><strong>Vendedor:</strong> Sol. Imp. Digital - Jeferson Orozco</p>
+          </div>
+        </div>
+
+        <!-- Card: Ubicación -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="map-pin"></i> Ubicación</h3>
+            <button class="btn-icon" id="btn-edit-location" title="Editar Ubicación"><i data-feather="edit-2"></i></button>
+          </div>
+          <div class="card-body" id="location-view">
+            <p class="address"><strong>Dirección:</strong> <span id="txt-direccion">7A AV 5-10, CENTRO FINANCIERO TORRE DE PARQUEO NIVEL 2</span></p>
+            <p><span id="txt-zona">Zona 4, Guatemala</span></p>
+            <hr>
+            <p><strong>Contacto:</strong> <span id="txt-contacto">WALTER PEREZ</span></p>
+            <p class="text-muted"><span id="txt-email">WPEREZ@BI.COM.GT</span></p>
+            <p><strong>Coordenadas:</strong> 14.6186041, -90.5165099</p>
+          </div>
+          <div class="card-body hidden" id="location-edit-form">
+            <div class="form-group">
+              <label>Dirección</label>
+              <input type="text" id="input-direccion" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Zona / Ciudad</label>
+              <input type="text" id="input-zona" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Contacto</label>
+              <input type="text" id="input-contacto" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Correo Electrónico</label>
+              <input type="email" id="input-email" class="form-control">
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" id="btn-save-location">Guardar</button>
+              <button class="btn btn-secondary" id="btn-cancel-location">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Lecturas Rápidas -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="hash"></i> Últimas Lecturas</h3>
+            <button class="btn-icon" id="btn-go-lecturas" title="Ir a Gestión de Lecturas"><i data-feather="external-link"></i></button>
+          </div>
+          <div class="card-body table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Contador</th>
+                  <th>Origen</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-lecturas"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Card: Tickets -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="life-buoy"></i> Tickets <span class="badge-count" id="count-tickets">0</span></h3>
+            <div>
+              <button class="btn-icon btn-add" id="btn-add-ticket" title="Agregar Ticket"><i data-feather="plus"></i></button>
+            </div>
+          </div>
+          <div class="card-body table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ticket</th>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-tickets"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Card: Visitas -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="check-circle"></i> Visitas</h3>
+            <button class="btn-icon btn-add" id="btn-add-visita" title="Agregar Visita"><i data-feather="plus"></i></button>
+          </div>
+          <div class="card-body table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Boleta</th>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-visitas"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Card: Tóner -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-feather="droplet"></i> Tóner</h3>
+            <button class="btn-icon"><i data-feather="more-horizontal"></i></button>
+          </div>
+          <div class="card-body table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Despacho</th>
+                  <th>Fecha</th>
+                  <th>Suministro</th>
+                  <th>Cant.</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-toner"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VISTA 2: GESTIÓN DE LECTURAS -->
+      <section class="dashboard-grid view-section hidden" id="view-lecturas">
+        <div class="card span-full page-title-card">
+          <div class="title-bar">
+            <h2><i data-feather="file-text"></i> Gestión de Lecturas</h2>
+            <div class="period-info">
+              <span class="badge-period"><i data-feather="calendar"></i> Mes Actual Lectura: <strong>8</strong></span>
+              <span class="badge-period"><i data-feather="calendar"></i> Año Actual Lectura: <strong>2026</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-full search-filters-card">
+          <div class="filters-grid">
+            <div class="input-group">
+              <label>Cliente</label>
+              <input type="text" id="filter-cliente" class="form-control" placeholder="Nombre cliente...">
+            </div>
+            <div class="input-group">
+              <label>Código SAP</label>
+              <input type="text" id="filter-sap" class="form-control" placeholder="Ej. 100456">
+            </div>
+            <div class="input-group">
+              <label>Contrato</label>
+              <input type="text" id="filter-contrato" class="form-control" placeholder="Ej. 5015">
+            </div>
+            <div class="input-group">
+              <label>Serie</label>
+              <input type="text" id="filter-serie" class="form-control" placeholder="Ej. 23D00624">
+            </div>
+            <div class="input-group">
+              <label>Estado</label>
+              <select id="filter-estado" class="form-control">
+                <option value="PENDIENTES">PENDIENTES</option>
+                <option value="TOMADAS">TOMADAS</option>
+                <option value="TODOS">TODOS</option>
+              </select>
+            </div>
+            <div class="filter-actions-btn">
+              <button class="btn btn-primary btn-search" id="btn-search-lecturas">
+                <i data-feather="search"></i> Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-full">
+          <div class="card-header">
+            <h3><i data-feather="list"></i> Equipos Pendientes de Toma de Lectura</h3>
+            <span class="badge-count" id="count-pending-lecturas">2 Equipos</span>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Serie</th>
+                  <th>Cliente</th>
+                  <th class="text-center">Día Límite Toma Lectura</th>
+                  <th>Canal</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-equipos-pendientes"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 3: SOLICITUDES DE ÓRDENES DE REPUESTOS -->
+      <section class="dashboard-grid view-section hidden" id="view-repuestos">
+        
+        <!-- Header Principal de Solicitud de Repuestos -->
+        <div class="card span-full page-title-card repuestos-header">
+          <div class="title-bar">
+            <h2><i data-feather="tool"></i> Solicitudes de Órdenes de Repuestos</h2>
+            <div class="period-info">
+              <span class="badge-period"><i data-feather="clock"></i> Módulo de Gestión de Inventario & Diagnóstico</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Búsqueda Avanzada de Repuestos -->
+        <div class="card span-full search-filters-card">
+          <div class="repuestos-filters-grid">
+            <div class="input-group">
+              <label>Serie</label>
+              <input type="text" id="rep-filter-serie" class="form-control" placeholder="Ej. 25Z00705">
+            </div>
+            <div class="input-group grow">
+              <label>Cliente</label>
+              <input type="text" id="rep-filter-cliente" class="form-control" placeholder="Ej. Universidad Regional...">
+            </div>
+            <div class="input-group grow">
+              <label>Repuesto</label>
+              <input type="text" id="rep-filter-repuesto" class="form-control" placeholder="Ej. Bandeja, Toner...">
+            </div>
+            <button class="btn btn-primary btn-search-repuestos" id="btn-search-repuestos">
+              <i data-feather="search"></i>
+            </button>
+          </div>
+
+          <div class="repuestos-filters-row-2">
+            <div class="input-group">
+              <label>Ticket</label>
+              <input type="text" id="rep-filter-ticket" class="form-control" placeholder="Ej. 2063252">
+            </div>
+            <div class="input-group">
+              <label>Técnico Reparación</label>
+              <select id="rep-filter-tec-rep" class="form-control">
+                <option value="TODOS">TODOS</option>
+                <option value="Luis Alfredo Alvarado Racancoj">Luis Alfredo Alvarado Racancoj</option>
+                <option value="Santiago Pu Damian">Santiago Pu Damian</option>
+                <option value="Jorge Mario Ramirez Juarez">Jorge Mario Ramirez Juarez</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Técnico Repuestos</label>
+              <select id="rep-filter-tec-repuestos" class="form-control">
+                <option value="TODOS">TODOS</option>
+                <option value="jgonzalez">jgonzalez</option>
+                <option value="jmuniz">jmuniz</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="toolbar-sub-actions">
+            <div class="checkbox-filters-group">
+              <label class="custom-checkbox"><input type="checkbox" id="chk-pendientes"> Pendientes</label>
+              <label class="custom-checkbox"><input type="checkbox" id="chk-cotizaciones"> Cotizaciones</label>
+              <label class="custom-checkbox"><input type="checkbox" id="chk-despachados"> Despachados</label>
+              <div class="inline-group">
+                <span>Tipo Cliente:</span>
+                <select id="rep-filter-tipo-cliente" class="form-control inline-select">
+                  <option value="TODOS">TODOS</option>
+                  <option value="Cliente Facturado">Cliente Facturado</option>
+                  <option value="Contrato Renta">Contrato Renta</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="quick-icons-toolbar">
+              <button title="Exportar SAP"><i data-feather="database"></i></button>
+              <button title="Configuración"><i data-feather="settings"></i></button>
+              <button title="Cancelar / Eliminar Masivo"><i data-feather="x-circle"></i></button>
+              <button title="Cotización Rápida"><i data-feather="dollar-sign"></i></button>
+              <button title="Limpiar"><i data-feather="trash-2"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla de Solicitudes de Órdenes de Repuestos -->
+        <div class="card span-full">
+          <div class="card-header">
+            <h3><i data-feather="clipboard"></i> Listado de Repuestos Solicitados</h3>
+            <span class="badge-count" id="count-repuestos-solicitudes">8 Solicitudes</span>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Serie</th>
+                  <th>Ticket</th>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Tipo Cliente</th>
+                  <th>Técnico Reparación</th>
+                  <th>Operador</th>
+                  <th>Repuesto</th>
+                  <th class="text-center">Cant.</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-solicitudes-repuestos">
+                <!-- JS se encarga de poblar -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VISTA 4: GESTIÓN DE CONTRATOS -->
+      <section class="dashboard-grid view-section hidden" id="view-contratos">
+        <div class="card span-full page-title-card contratos-header">
+          <div class="title-bar">
+            <h2><i data-feather="file-text"></i> Gestión de Contratos</h2>
+            <div class="period-info">
+              <span class="badge-period"><i data-feather="shield"></i> Módulo de Administración de Contratos</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Contratos -->
+        <div class="card span-full search-filters-card">
+          <div class="filters-grid">
+            <div class="input-group">
+              <label>Cliente</label>
+              <input type="text" id="contract-filter-cliente" class="form-control" placeholder="Buscar por cliente...">
+            </div>
+            <div class="input-group">
+              <label>Contrato</label>
+              <input type="text" id="contract-filter-num" class="form-control" placeholder="Ej. 5681">
+            </div>
+            <div class="input-group">
+              <label>Código SAP</label>
+              <input type="text" id="contract-filter-sap" class="form-control" placeholder="Ej. C023652">
+            </div>
+            <div class="input-group">
+              <label>Nit</label>
+              <input type="text" id="contract-filter-nit" class="form-control" placeholder="Ej. 6642036-9">
+            </div>
+            <div class="filter-actions-btn">
+              <button class="btn btn-primary btn-search" id="btn-search-contracts">
+                <i data-feather="search"></i> Buscar
+              </button>
+            </div>
+          </div>
+          <div class="toolbar-sub-actions">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="chk-mantenimiento"> Contratos de Mantenimiento (A/I)
+            </label>
+          </div>
+        </div>
+
+        <!-- Tabla de Contratos -->
+        <div class="card span-full">
+          <div class="card-header">
+            <h3><i data-feather="list"></i> Listado de Contratos registrados</h3>
+            <span class="badge-count" id="count-contracts">0 Registros</span>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th class="text-center">Contrato</th>
+                  <th>Código SAP</th>
+                  <th>Nit</th>
+                  <th class="text-center">Estado</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-contratos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Contadores -->
+  <div class="modal-overlay hidden" id="modal-ingreso-contadores">
+    <div class="modal modal-xl">
+      <div class="modal-header modal-header-gold">
+        <h3><i data-feather="hash"></i> Ingreso de Contadores - Último Contador 101: <span id="lbl-modal-ultimo-101">294,564</span></h3>
+        <button class="btn-icon btn-close-white" id="btn-close-modal-contadores"><i data-feather="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="counter-details-grid">
+          <div class="detail-box"><span class="detail-label">Serie</span><span class="detail-value" id="m-serie">23D00624</span></div>
+          <div class="detail-box"><span class="detail-label">Contrato</span><span class="detail-value" id="m-contrato">5015</span></div>
+          <div class="detail-box span-2"><span class="detail-label">Cliente</span><span class="detail-value" id="m-cliente">MUNICIPALIDAD DE GUATEMALA</span></div>
+          <div class="detail-box span-2"><span class="detail-label">Dirección</span><span class="detail-value" id="m-direccion">RUTA 4 6-32 EDIFICIO GRANAT NIVEL 3</span></div>
+          <div class="detail-box"><span class="detail-label">Teléfonos</span><span class="detail-value" id="m-telefonos">5925-4723</span></div>
+          <div class="detail-box"><span class="detail-label">Contacto</span><span class="detail-value" id="m-contacto">BRENDA VALERIA PACHECO</span></div>
+          <div class="detail-box highlight-box"><span class="detail-label">Contador 101 Anterior</span><span class="detail-value" id="m-contador-anterior">0</span></div>
+          <div class="detail-box span-2"><span class="detail-label">Otros Contadores</span><span class="detail-value" id="m-otros-contadores">105: 0 | 120: 0 | 501: 0</span></div>
+        </div>
+        <div class="counter-input-card">
+          <div class="form-row flex-align-end">
+            <div class="form-group"><label>Tipo</label><select id="m-input-tipo" class="form-control"><option value="GENERAL">GENERAL</option></select></div>
+            <div class="form-group"><label>Contador</label><input type="number" id="m-input-contador" class="form-control highlight-input" value="294564"></div>
+            <div class="form-group grow"><label>Motivo</label><select id="m-input-motivo" class="form-control"><option value="SIN MOTIVO">SIN MOTIVO</option></select></div>
+          </div>
+          <div class="counter-btn-actions">
+            <button class="btn btn-success btn-counter-action" id="btn-save-counter"><i data-feather="plus"></i> Ingresar Contador</button>
+            <button class="btn btn-danger btn-counter-action" id="btn-reset-counter"><i data-feather="minus"></i> Resetear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Mapa -->
+  <div class="modal-overlay hidden" id="modal-map">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3><i data-feather="map-pin"></i> Ubicación Geográfica del Equipo</h3>
+        <button class="btn-icon" id="btn-close-map"><i data-feather="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted" style="margin-bottom: 10px;">Coordenadas: <strong>14.6186041, -90.5165099</strong></p>
+        <div id="map" style="height: 320px; width: 100%; border-radius: 8px;"></div>
+      </div>
+      <div class="modal-footer" style="gap: 10px;">
+        <a id="btn-open-gmaps" href="https://www.google.com/maps?q=14.6186041,-90.5165099" target="_blank" class="btn btn-primary" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+          <i data-feather="navigation"></i> Abrir en Google Maps
+        </a>
+        <button class="btn btn-secondary" id="btn-cancel-map">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nuevo Ticket -->
+  <div class="modal-overlay hidden" id="modal-ticket">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nuevo Ticket</h3>
+        <button class="btn-icon" id="btn-close-modal"><i data-feather="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Número de Ticket (Autogenerado)</label>
+          <input type="text" id="ticket-id" class="form-control" readonly style="background-color: #f1f5f9; font-weight: bold; color: var(--accent-color);">
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="ticket-tipo" class="form-control">
+            <option value="S">S - Servicio</option>
+            <option value="M">M - Mantenimiento Preventivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="ticket-estado" class="form-control">
+            <option value="Recibido">Recibido</option>
+            <option value="En Proceso">En Proceso</option>
+            <option value="Terminado">Terminado</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-save-ticket">Crear Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE DE CONTRATO -->
+  <div class="modal-overlay hidden" id="modal-detalle-contrato">
+    <div class="modal modal-xl">
+      <div class="modal-header modal-header-gold">
+        <h3><i data-feather="file-text"></i> Detalle de Contrato No. <span id="lbl-contrato-num">5681</span></h3>
+        <button class="btn-icon btn-close-white" id="btn-close-modal-contrato"><i data-feather="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="contract-form-grid">
+          <div class="form-group span-2">
+            <label>Nombre de Cliente</label>
+            <input type="text" id="c-nombre" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Contrato</label>
+            <input type="text" id="c-numero" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Vencimiento</label>
+            <input type="text" id="c-venc-fecha" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Código SAP</label>
+            <input type="text" id="c-sap" class="form-control" readonly>
+          </div>
+          <div class="form-group span-2">
+            <label>Vendedor</label>
+            <input type="text" id="c-vendedor" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Contrato</label>
+            <input type="text" id="c-tipo" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Nit</label>
+            <input type="text" id="c-nit" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Vencimiento</label>
+            <input type="text" id="c-estado-venc" class="form-control highlight-status" readonly>
+          </div>
+          <div class="form-group">
+            <label>Programación Mantenimiento Preventivo</label>
+            <select id="c-prog-mantenimiento" class="form-control">
+              <option value="SIN PROGRAMACIÓN">1 vez al año</option>
+              <option value="MENSUAL">2 veces al año</option>
+              <option value="BIMESTRAL">3 veces al año</option>
+              <option value="BIMESTRAL">4 veces al año</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Día Límite Lectura</label>
+            <input type="number" id="c-dia-limite" class="form-control" value="0">
+          </div>
+          <div class="form-group span-2">
+            <label>Comentarios</label>
+            <input type="text" id="c-comentarios" class="form-control" value="SIN DATOS EN SCON WEB">
+          </div>
+          <div class="form-group">
+            <label>Días Máximo Toma Lectura</label>
+            <input type="number" id="c-dias-max" class="form-control" value="0">
+          </div>
+          <div class="form-group">
+            <label>Valor</label>
+            <input type="number" id="c-valor" class="form-control" value="0">
+          </div>
+          <div class="form-group">
+            <label>Canal Lectura</label>
+            <select id="c-canal-lectura" class="form-control">
+              <option value="NO APLICA">NO APLICA</option>
+              <option value="TECNICO">TÉCNICO</option>
+              <option value="CLIENTE">CLIENTE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Derecho Impresiones B/N</label>
+            <input type="number" id="c-derecho-bn" class="form-control" value="0">
+          </div>
+          <div class="form-group">
+            <label>Formato Boleta Lectura</label>
+            <select id="c-formato-boleta" class="form-control">
+              <option value="SIN FORMATO">SIN FORMATO</option>
+              <option value="STANDARD">STANDARD</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Derecho Impresiones Color</label>
+            <input type="number" id="c-derecho-color" class="form-control" value="0">
+          </div>
+          <div class="form-group span-2 flex-align-center">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="c-software-monitoreo"> Contrato con Software de Monitoreo
+            </label>
+          </div>
+        </div>
+        <div class="counter-btn-actions">
+          <button class="btn btn-primary btn-counter-action" id="btn-save-contract-details">
+            <i data-feather="save"></i> Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <script src="logicaEquipos.js"></script>
+  <script src="logicaLecturas.js"></script>
+  <script src="logicaRepuestos.js"></script>
+  <script src="logicaContratos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
