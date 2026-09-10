@@ -12,8 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const navContratosPage = document.getElementById('nav-contratos-page');
   const btnGoLecturas = document.getElementById('btn-go-lecturas');
   const breadcrumb = document.getElementById('top-breadcrumb');
+  const sidebar = document.querySelector('.sidebar');
+  const mobileMenu = document.getElementById('btn-mobile-menu');
+
+  mobileMenu?.addEventListener('click', () => {
+    const isOpen = sidebar?.classList.toggle('mobile-open');
+    mobileMenu.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
 
   window.showView = (viewName) => {
+    sidebar?.classList.remove('mobile-open');
+    mobileMenu?.setAttribute('aria-expanded', 'false');
     [navEquipos, navLecturasPage, navRepuestosPage, navContratosPage].forEach(n => n?.classList.remove('active'));
     [viewEquipos, viewLecturas, viewRepuestos, viewContratos].forEach(v => v?.classList.add('hidden'));
 
