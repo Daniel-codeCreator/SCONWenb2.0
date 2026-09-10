@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewLecturas = document.getElementById('view-lecturas');
   const viewRepuestos = document.getElementById('view-repuestos');
   const viewContratos = document.getElementById('view-contratos');
+  const viewIndicadores = document.getElementById('view-indicadores');
 
   const navEquipos = document.getElementById('nav-equipos');
   const navLecturasPage = document.getElementById('nav-lecturas-page');
   const navRepuestosPage = document.getElementById('nav-repuestos-page');
   const navContratosPage = document.getElementById('nav-contratos-page');
+  const navIndicadores = document.getElementById('nav-indicadores');
   const btnGoLecturas = document.getElementById('btn-go-lecturas');
   const breadcrumb = document.getElementById('top-breadcrumb');
   const sidebar = document.querySelector('.sidebar');
@@ -23,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.showView = (viewName) => {
     sidebar?.classList.remove('mobile-open');
     mobileMenu?.setAttribute('aria-expanded', 'false');
-    [navEquipos, navLecturasPage, navRepuestosPage, navContratosPage].forEach(n => n?.classList.remove('active'));
-    [viewEquipos, viewLecturas, viewRepuestos, viewContratos].forEach(v => v?.classList.add('hidden'));
+    [navEquipos, navLecturasPage, navRepuestosPage, navContratosPage, navIndicadores].forEach(n => n?.classList.remove('active'));
+    [viewEquipos, viewLecturas, viewRepuestos, viewContratos, viewIndicadores].forEach(v => v?.classList.add('hidden'));
 
     if (viewName === 'lecturas') {
       viewLecturas.classList.remove('hidden');
@@ -38,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
       viewContratos.classList.remove('hidden');
       navContratosPage.classList.add('active');
       breadcrumb.innerHTML = '<span>Menú Principal</span> / <strong>Gestión de Contratos</strong>';
+    } else if (viewName === 'indicadores') {
+      viewIndicadores.classList.remove('hidden');
+      navIndicadores.classList.add('active');
+      breadcrumb.innerHTML = '<span>Menú Principal</span> / <strong>Indicadores</strong>';
     } else {
       viewEquipos.classList.remove('hidden');
       navEquipos.classList.add('active');
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   navLecturasPage?.addEventListener('click', (e) => { e.preventDefault(); window.showView('lecturas'); });
   navRepuestosPage?.addEventListener('click', (e) => { e.preventDefault(); window.showView('repuestos'); });
   navContratosPage?.addEventListener('click', (e) => { e.preventDefault(); window.showView('contratos'); });
+  navIndicadores?.addEventListener('click', (e) => { e.preventDefault(); window.showView('indicadores'); });
   btnGoLecturas?.addEventListener('click', () => window.showView('lecturas'));
 
   initLogicaEquipos();

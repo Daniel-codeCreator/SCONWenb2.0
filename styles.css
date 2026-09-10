@@ -164,6 +164,17 @@ tbody tr:last-child td { border-bottom: none; }
 .highlight-status { font-weight: 700; color: #087354; background: #e9f8f1 !important; border-color: #b9e8d4 !important; }
 .flex-align-center { display: flex; align-items: center; }
 
+/* Indicadores */
+.indicators-view { padding: 28px 32px 40px; background: #fff; min-height: 100%; }
+.indicators-heading { max-width: 1100px; margin: 0 auto 9px; height: 52px; border-radius: 11px; background: #0b044d; color: #fff; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 8px 18px rgba(11,4,77,.14); }
+.indicators-heading svg { width: 20px; height: 20px; }
+.indicators-heading h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; }
+.indicators-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.indicator-card { min-height: 174px; border: 1.5px solid #0b044d; border-radius: 11px; padding: 4px; display: flex; flex-direction: column; align-items: center; background: #fff; overflow: hidden; }
+.indicator-card h3 { width: 100%; min-height: 31px; padding: 5px 7px; border-radius: 9px; background: #0b044d; color: #fff; font-size: .84rem; line-height: 1.1; text-align: center; display: flex; align-items: center; justify-content: center; }
+.indicator-value { flex: 1; display: flex; align-items: center; justify-content: center; color: #20252b; font-size: clamp(2.6rem, 5vw, 4.1rem); line-height: 1; font-weight: 700; letter-spacing: -2px; }
+.indicator-value.accent { color: #0b044d; }
+
 @media (max-width: 900px) {
   .sidebar { width: 230px; flex-basis: 230px; }
   .dashboard-grid { padding: 22px 20px 30px; }
@@ -182,6 +193,10 @@ tbody tr:last-child td { border-bottom: none; }
   .breadcrumb { font-size: .75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .user-profile span { display: none; }
   .dashboard-grid { display: flex; flex-direction: column; padding: 16px 12px 28px; gap: 14px; }
+  .indicators-view { padding: 16px 12px 28px; }
+  .indicators-grid { grid-template-columns: 1fr; gap: 12px; }
+  .indicator-card { min-height: 145px; }
+  .indicator-value { font-size: 3rem; }
   .span-2 { grid-column: auto; }
   .equipment-header-card { padding: 16px; }
   .action-toolbar { width: 100%; margin-left: 0; justify-content: space-between; }
